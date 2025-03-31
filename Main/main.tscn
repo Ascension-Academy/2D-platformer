@@ -1,0 +1,74 @@
+[gd_scene load_steps=12 format=3 uid="uid://cipord316v7iv"]
+
+[ext_resource type="PackedScene" uid="uid://74ac33r8dmw4" path="res://Tileset/tilemap.tscn" id="1_2w1kt"]
+[ext_resource type="Script" uid="uid://l41c6bu3v0xf" path="res://Main/score_label.gd" id="1_f6fdm"]
+[ext_resource type="Script" uid="uid://ber6mouvmdsmb" path="res://Main/player.gd" id="2_ib3t1"]
+[ext_resource type="Texture2D" uid="uid://b8y3stc0skg22" path="res://Sprites/Characters/character_0004.png" id="2_qvhan"]
+[ext_resource type="PackedScene" uid="uid://c7mw5y8j8cwxa" path="res://Enemyt/enemy.tscn" id="4_eunhr"]
+[ext_resource type="PackedScene" uid="uid://0ik1fgwwlygi" path="res://Spikes/spikes.tscn" id="5_ib3t1"]
+[ext_resource type="Script" uid="uid://omri5206nbtw" path="res://Main/coin.gd" id="6_f6fdm"]
+[ext_resource type="Texture2D" uid="uid://bvr3gcc4mg6h8" path="res://Sprites/Objects/tile_0151.png" id="7_rj11h"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ib3t1"]
+font_size = 28
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_eunhr"]
+radius = 9.0
+height = 22.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qac2q"]
+radius = 7.07107
+
+[node name="Main" type="Node2D"]
+position = Vector2(128, 95)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ScoreLabel" type="Label" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "0"
+label_settings = SubResource("LabelSettings_ib3t1")
+script = ExtResource("1_f6fdm")
+
+[node name="TileMapLayer" parent="." instance=ExtResource("1_2w1kt")]
+
+[node name="Player" type="CharacterBody2D" parent="." groups=["Player"]]
+position = Vector2(16, -12)
+script = ExtResource("2_ib3t1")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2(0, -2)
+zoom = Vector2(4, 4)
+
+[node name="Character0004" type="Sprite2D" parent="Player"]
+texture = ExtResource("2_qvhan")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("CapsuleShape2D_eunhr")
+
+[node name="Enemy" parent="." instance=ExtResource("4_eunhr")]
+position = Vector2(118, -45)
+
+[node name="Enemy2" parent="." instance=ExtResource("4_eunhr")]
+position = Vector2(198, -48)
+move_dir = Vector2(0, -90)
+
+[node name="Enemy3" parent="." instance=ExtResource("4_eunhr")]
+position = Vector2(339, -66)
+move_dir = Vector2(0, -60)
+
+[node name="Spikes" parent="." instance=ExtResource("5_ib3t1")]
+position = Vector2(288, -45)
+
+[node name="Coin" type="Area2D" parent="."]
+position = Vector2(60, -11)
+script = ExtResource("6_f6fdm")
+
+[node name="Sprite" type="Sprite2D" parent="Coin"]
+texture = ExtResource("7_rj11h")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Coin"]
+shape = SubResource("CircleShape2D_qac2q")
+
+[connection signal="body_entered" from="Coin" to="Coin" method="_on_body_entered"]
